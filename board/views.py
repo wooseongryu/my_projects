@@ -1,6 +1,9 @@
 from django.shortcuts import render
+from django.views.generic import ListView
 from .models import Post
 
-def post_list(request):
-    object_list = Post.objects.all()
-    return render(request, 'board/post_list.html', {'object_list': object_list})
+
+class PostListView(ListView):
+    model = Post
+    template_name = 'board/post_list.html'
+    context_object_name = 'posts'

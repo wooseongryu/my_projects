@@ -4,7 +4,7 @@ from . import views
 urlpatterns = [
     path(
         'list/',
-        views.post_list,
+        views.PostListView.as_view(),
         name='post-list'
     ),
     # path(

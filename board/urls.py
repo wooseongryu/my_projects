@@ -17,11 +17,11 @@ urlpatterns = [
         views.PostDetailView.as_view(),
         name='post-detail'
     ),
-    # path(
-    #     'post/<int:page_id>/edit/',
-    #     views.post_update.as_view(),
-    #     name='post-update'
-    # ),
+    path(
+        'post/<int:page_id>/edit/',
+        views.PostUpdateView.as_view(),
+        name='post-update'
+    ),
     # path(
     #     'post/<int:page_id>/delete/',
     #     views.post_delete.as_view(),

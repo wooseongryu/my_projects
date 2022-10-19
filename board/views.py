@@ -1,7 +1,8 @@
 from django.views.generic import (
     ListView, 
     DetailView,
-    CreateView
+    CreateView,
+    UpdateView,
 )
 from django.urls import reverse
 from .models import Post
@@ -30,3 +31,11 @@ class PostWriteView(CreateView):
     def get_success_url(self):
         return reverse('post-detail', kwargs={'page_id':self.object.id})
 
+class PostUpdateView(UpdateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'board/post_form.html'
+    pk_url_kwarg ='page_id'
+
+    def get_success_url(self):
+        return reverse('post-detail', kwargs={'page_id':self.object.id})

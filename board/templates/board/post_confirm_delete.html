@@ -1,0 +1,6 @@
+<form method="post">{% csrf_token %}
+    <p>정말 삭제하시겠어요?</p>
+    <p>포스트 제목: {{ post.title }}</p>
+    {{ form }}
+    <input type="submit" value="삭제하기">
+</form>

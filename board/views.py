@@ -3,6 +3,7 @@ from django.views.generic import (
     DetailView,
     CreateView,
     UpdateView,
+    DeleteView,
 )
 from django.urls import reverse
 from .models import Post
@@ -39,3 +40,12 @@ class PostUpdateView(UpdateView):
 
     def get_success_url(self):
         return reverse('post-detail', kwargs={'page_id':self.object.id})
+
+class PostDeleteView(DeleteView):
+    model = Post
+    template_name = 'board/post_confirm_delete.html'
+    pk_url_kwarg = 'page_id'
+    context_object_name = 'post'
+
+    def get_success_url(self):
+        return reverse('post-list')

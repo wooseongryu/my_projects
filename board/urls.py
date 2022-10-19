@@ -22,9 +22,9 @@ urlpatterns = [
         views.PostUpdateView.as_view(),
         name='post-update'
     ),
-    # path(
-    #     'post/<int:page_id>/delete/',
-    #     views.post_delete.as_view(),
-    #     name='post-delete'
-    # ),
+    path(
+        'post/<int:page_id>/delete/',
+        views.PostDeleteView.as_view(),
+        name='post-delete'
+    ),
 ]

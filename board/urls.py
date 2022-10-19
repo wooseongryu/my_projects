@@ -7,11 +7,11 @@ urlpatterns = [
         views.PostListView.as_view(),
         name='post-list'
     ),
-    # path(
-    #     'write/',
-    #     views.post_write.as_view(),
-    #     name='post-write'
-    # ),
+    path(
+        'write/',
+        views.PostWriteView.as_view(),
+        name='post-write'
+    ),
     path(
         'post/<int:page_id>/',
         views.PostDetailView.as_view(),

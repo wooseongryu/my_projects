@@ -2,3 +2,5 @@
 <p>{{ post.content|linebreaksbr }}</p>
 <p>작성일: {{ post.dt_created|date:"Y.m.d" }}</p>
 <p>수정일: {{ post.dt_updated|date:"Y.m.d" }}</p>
+
+<p><a href="{% url 'post-list' %}">목록으로 돌아가기</a></p>

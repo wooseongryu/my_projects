@@ -12,11 +12,11 @@ urlpatterns = [
     #     views.post_write.as_view(),
     #     name='post-write'
     # ),
-    # path(
-    #     'post/<int:page_id>/',
-    #     views.post_detail.as_view(),
-    #     name='post-detail'
-    # ),
+    path(
+        'post/<int:page_id>/',
+        views.PostDetailView.as_view(),
+        name='post-detail'
+    ),
     # path(
     #     'post/<int:page_id>/edit/',
     #     views.post_update.as_view(),

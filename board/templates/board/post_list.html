@@ -1,0 +1,10 @@
+<h1>포스트 목록 페이지</h1>
+<table>
+    <th>포스트 목록</th>
+    {% for obj in object_list %}
+        <tr>            
+            <td><a href="">{{obj.title}}</a></td>            
+            <td>작성일:{{obj.dt_created|date:"Y.m.d"}}</td>
+        </tr>
+    {% endfor %}
+</table>

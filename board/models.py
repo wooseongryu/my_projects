@@ -12,7 +12,12 @@ class Post(models.Model):
         return self.title
 
 class User(AbstractUser):
-    nickname = models.CharField(max_length=15, unique=True, null=True)
+    nickname = models.CharField(
+        max_length=15,
+        unique=True,
+        null=True,
+        error_messages={"unique": '해당 닉네임은 이미 사용중입니다!'}
+    )
 
     def __str__(self):
         return self.email

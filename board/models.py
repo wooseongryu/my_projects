@@ -12,4 +12,5 @@ class Post(models.Model):
         return self.title
 
 class User(AbstractUser):
-    pass
+    def __str__(self):
+        return self.email

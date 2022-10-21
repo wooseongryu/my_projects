@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 from .validators import validate_length
 
 class Post(models.Model):
@@ -9,3 +10,6 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+class User(AbstractUser):
+    pass

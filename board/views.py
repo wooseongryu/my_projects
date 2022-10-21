@@ -6,6 +6,7 @@ from django.views.generic import (
     DeleteView,
 )
 from django.urls import reverse
+from allauth.account.views import PasswordChangeView
 from .models import Post
 from .forms import PostForm
 
@@ -47,5 +48,10 @@ class PostDeleteView(DeleteView):
     pk_url_kwarg = 'page_id'
     context_object_name = 'post'
 
+    def get_success_url(self):
+        return reverse('post-list')
+
+# PasswordChangeView 오버라이드
+class CustomPasswordChangeView(PasswordChangeView):
     def get_success_url(self):
         return reverse('post-list')

@@ -137,3 +137,6 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'board.User'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+ACCOUNT_SIGNUP_REDIRECT_URL = 'post-list'
+LOGIN_REDIRECT_URL = 'post-list'
+ACCOUNT_LOGOUT_ON_GET = True

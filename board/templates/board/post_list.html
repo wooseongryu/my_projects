@@ -1,5 +1,13 @@
 <h1>포스트 목록 페이지</h1>
 
+{% if user.is_authenticated %}
+    <p>안녕하세요, {{user}}님</p>
+    <a href="{% url 'account_logout' %}">로그아웃</a>
+{% else %}
+    <a href="{% url 'account_login' %}">로그인</a>
+    <a href="{% url 'account_signup' %}">회원가입</a>
+{% endif %}
+
 <p><a href="{% url 'post-write' %}">글 작성하기</a></p>
 
 <table>

@@ -7,6 +7,7 @@ from django.views.generic import (
 )
 from django.urls import reverse
 from allauth.account.views import PasswordChangeView
+from braces.views import LoginRequiredMixin
 from .models import Post
 from .forms import PostForm
 
@@ -25,7 +26,7 @@ class PostDetailView(DetailView):
     pk_url_kwarg = 'page_id'
     context_object_name = 'post'
 
-class PostWriteView(CreateView):
+class PostWriteView(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostForm
     template_name = 'board/post_form.html'

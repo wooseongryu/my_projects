@@ -130,6 +130,7 @@ AUTH_USER_MODEL = 'board.User'
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 ACCOUNT_SIGNUP_REDIRECT_URL = 'post-list'
 LOGIN_REDIRECT_URL = 'post-list'
+LOGIN_URL = 'account_login'
 ACCOUNT_LOGOUT_ON_GET = True
 ACCOUNT_AUTHENTICATION_METHOD = 'email'
 ACCOUNT_EMAIL_REQUIRED = True

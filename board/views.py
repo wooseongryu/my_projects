@@ -47,20 +47,32 @@ class PostWriteView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     def get_success_url(self):
         return reverse('post-detail', kwargs={'page_id':self.object.id})
 
-class PostUpdateView(UpdateView):
+class PostUpdateView(UserPassesTestMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = 'board/post_form.html'
     pk_url_kwarg ='page_id'
 
+    raise_exception = True
+
+    def test_func(self, user):
+        post = self.get_object()
+        return post.author == user
+
     def get_success_url(self):
         return reverse('post-detail', kwargs={'page_id':self.object.id})
 
-class PostDeleteView(DeleteView):
+class PostDeleteView(UserPassesTestMixin, DeleteView):
     model = Post
     template_name = 'board/post_confirm_delete.html'
     pk_url_kwarg = 'page_id'
     context_object_name = 'post'
+
+    raise_exception = True
+
+    def test_func(self, user):
+        post = self.get_object()
+        return post.author == user
 
     def get_success_url(self):
         return reverse('post-list')

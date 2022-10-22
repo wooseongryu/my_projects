@@ -30,6 +30,11 @@ class PostWriteView(CreateView):
     form_class = PostForm
     template_name = 'board/post_form.html'
 
+    # user모델과 자동으로 연동시킴
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        return super().form_valid(form)
+
     def get_success_url(self):
         return reverse('post-detail', kwargs={'page_id':self.object.id})
 

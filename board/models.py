@@ -21,7 +21,7 @@ class Post(models.Model):
     dt_created = models.DateField(auto_now_add=True)
     dt_updated = models.DateField(auto_now=True)
 
-    author = models.ForeignKey(User, on_delete=models.PROTECT)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.title

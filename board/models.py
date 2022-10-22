@@ -12,7 +12,7 @@ class User(AbstractUser):
     )
 
     def __str__(self):
-        return self.email
+        return self.nickname
 
 
 class Post(models.Model):

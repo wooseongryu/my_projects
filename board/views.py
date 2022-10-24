@@ -87,13 +87,14 @@ class CustomPasswordChangeView(PasswordChangeView):
 class ProfileView(DetailView):
     model = User
     template_name = 'user/profile.html'
-    pk_url_kwarg = 'user_id'
+    # pk_url_kwarg = 'user_id'
+    slug_url_kwarg = 'slug'
     context_object_name = 'profile_user'
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        user_id = self.kwargs.get('user_id')
-        context['user_posts'] = Post.objects.filter(author__id=user_id)[:5]
+        slug = self.kwargs.get('slug')
+        context['user_posts'] = Post.objects.filter(author__slug=slug)[:5]
         return context
 
 class UserPostListView(ListView):

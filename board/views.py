@@ -9,7 +9,7 @@ from django.urls import reverse
 from allauth.account.views import PasswordChangeView
 from allauth.account.models import EmailAddress
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
-from .models import Post
+from .models import Post, User
 from .forms import PostForm
 from .functions import confirmation_required_redirect
 
@@ -81,3 +81,16 @@ class PostDeleteView(UserPassesTestMixin, DeleteView):
 class CustomPasswordChangeView(PasswordChangeView):
     def get_success_url(self):
         return reverse('post-list')
+
+
+class ProfileView(DetailView):
+    model = User
+    template_name = 'user/profile.html'
+    pk_url_kwarg = 'user_id'
+    context_object_name = 'profile_user'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        user_id = self.kwargs.get('user_id')
+        context['user_posts'] = Post.objects.filter(author__id=user_id)[:5]
+        return context

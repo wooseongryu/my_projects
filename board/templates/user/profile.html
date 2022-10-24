@@ -1,0 +1,16 @@
+<h1>{{profile_user.nickname}}의 프로필</h1>
+
+<p>작성 포스트 목록</p>
+<table>
+    {% for post in user_posts %}
+        <tr>            
+            <td><a href="{% url 'post-detail' post.id %}">{{post.title}}</a></td>      
+            <td>작성일:{{post.dt_created|date:"Y.m.d"}}</td>
+        </tr>
+    {% empty %}
+        <p>작성한 포스트가 없습니다</p>
+    {% endfor %}
+</table>
+{% if user_posts %}
+    <p><a href="#">전체 포스트 보기</a></p>
+{% endif %}

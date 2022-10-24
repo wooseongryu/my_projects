@@ -11,7 +11,7 @@ from allauth.account.views import PasswordChangeView
 from allauth.account.models import EmailAddress
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from .models import Post, User
-from .forms import PostForm
+from .forms import PostForm, ProfileForm
 from .functions import confirmation_required_redirect
 
 
@@ -111,3 +111,15 @@ class UserPostListView(ListView):
         context = super().get_context_data(**kwargs)
         context['profile_user'] = get_object_or_404(User, id=self.kwargs.get('user_id'))
         return context
+
+class ProfileUpdateView(LoginRequiredMixin, UpdateView):
+    model = User
+    form_class = ProfileForm
+    template_name = 'user/profile_set_form.html'
+
+    # id를 따로 받지 않았으니 id를 전달할 수 있게 오버라이드 한다
+    def get_object(self, queryset=None):
+        return self.request.user
+
+    def get_success_url(self):
+        return reverse('profile', kwargs={'user_id':self.object.id})

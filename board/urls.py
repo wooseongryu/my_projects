@@ -39,4 +39,11 @@ urlpatterns = [
         views.UserPostListView.as_view(),
         name='user-post-list'
     ),
+    path(
+        # 프로필 설정은 현재 로그인된 유저로만
+        # 접근하니 id를 따로 받지 않음
+        'users/update-profile/',
+        views.ProfileUpdateView.as_view(),
+        name='profile-update'
+    ),
 ]

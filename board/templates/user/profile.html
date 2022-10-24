@@ -1,5 +1,11 @@
 <h1>{{profile_user.nickname}}의 프로필</h1>
 
+{% if user == profile_user %}
+    <p>
+        <a href="{% url 'profile-update' %}">프로필 설정</a>
+        <a href="{% url 'account_change_password' %}">비밀번호 변경</a>
+    </p>
+{% endif %}
 <p>작성 포스트 목록</p>
 <table>
     {% for post in user_posts %}

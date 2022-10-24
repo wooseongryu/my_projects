@@ -12,5 +12,5 @@
     {% endfor %}
 </table>
 {% if user_posts %}
-    <p><a href="#">전체 포스트 보기</a></p>
+    <p><a href="{% url 'user-post-list' profile_user.id %}">전체 포스트 보기</a></p>
 {% endif %}

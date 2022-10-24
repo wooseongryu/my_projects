@@ -1,3 +1,4 @@
+from django.shortcuts import get_object_or_404
 from django.views.generic import (
     ListView, 
     DetailView,
@@ -93,4 +94,20 @@ class ProfileView(DetailView):
         context = super().get_context_data(**kwargs)
         user_id = self.kwargs.get('user_id')
         context['user_posts'] = Post.objects.filter(author__id=user_id)[:5]
+        return context
+
+class UserPostListView(ListView):
+    model = Post
+    template_name = 'user/user_post_list.html'
+    context_object_name = 'user_posts'
+    paginate_by = 20
+    page_kwarg = 'page'
+
+    def get_queryset(self):
+        user_id = self.kwargs.get('user_id')
+        return Post.objects.filter(author__id=user_id).order_by('-dt_created')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profile_user'] = get_object_or_404(User, id=self.kwargs.get('user_id'))
         return context

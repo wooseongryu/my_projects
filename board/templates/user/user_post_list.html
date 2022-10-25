@@ -11,7 +11,7 @@
     {% endfor %}
 </table>
 
-<p><a href="{% url 'profile' profile_user.id %}">프로필로 돌아가기</a></p>
+<p><a href="{% url 'profile' profile_user.slug %}">프로필로 돌아가기</a></p>
 
 {% if page_obj.has_previous %}
     <a href="?page=1">first</a>

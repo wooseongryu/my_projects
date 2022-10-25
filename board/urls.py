@@ -35,7 +35,7 @@ urlpatterns = [
         name='profile'
     ),
     path(
-        'users/<int:user_id>/posts/',
+        'users/<slug>/posts/',
         views.UserPostListView.as_view(),
         name='user-post-list'
     ),

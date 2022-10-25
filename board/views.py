@@ -87,7 +87,6 @@ class CustomPasswordChangeView(PasswordChangeView):
 class ProfileView(DetailView):
     model = User
     template_name = 'user/profile.html'
-    # pk_url_kwarg = 'user_id'
     slug_url_kwarg = 'slug'
     context_object_name = 'profile_user'
 
@@ -105,12 +104,12 @@ class UserPostListView(ListView):
     page_kwarg = 'page'
 
     def get_queryset(self):
-        user_id = self.kwargs.get('user_id')
-        return Post.objects.filter(author__id=user_id).order_by('-dt_created')
+        slug = self.kwargs.get('slug')
+        return Post.objects.filter(author__slug=slug).order_by('-dt_created')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
-        context['profile_user'] = get_object_or_404(User, id=self.kwargs.get('user_id'))
+        context['profile_user'] = get_object_or_404(User, slug=self.kwargs.get('slug'))
         return context
 
 class ProfileUpdateView(LoginRequiredMixin, UpdateView):

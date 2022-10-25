@@ -20,3 +20,4 @@
 {% if user_posts %}
     <p><a href="{% url 'user-post-list' profile_user.id %}">전체 포스트 보기</a></p>
 {% endif %}
+<p><a href="{% url 'post-list' %}">홈으로 이동</a></p>

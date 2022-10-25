@@ -30,7 +30,7 @@ urlpatterns = [
     ),
     # profile
     path(
-        'users/<int:user_id>/',
+        'users/<slug>/',
         views.ProfileView.as_view(),
         name='profile'
     ),

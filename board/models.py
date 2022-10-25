@@ -1,5 +1,8 @@
+from email.policy import default
+from enum import unique
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.utils.text import slugify
 from .validators import validate_length, validate_no_special_charactors
 
 class User(AbstractUser):
@@ -11,8 +14,17 @@ class User(AbstractUser):
         validators = [validate_no_special_charactors],
     )
 
+    slug = models.SlugField(
+        unique=True,
+        null=True,
+    )
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.nickname, allow_unicode=True)
+        super(User, self).save(*args, **kwargs)
+
     def __str__(self):
-        return self.nickname
+        return str(self.nickname)
 
 
 class Post(models.Model):

@@ -1,6 +1,5 @@
 from django.db import models
 from django.contrib.auth.models import AbstractUser
-from autoslug import AutoSlugField
 from .validators import validate_length, validate_no_special_charactors
 
 class User(AbstractUser):
@@ -10,12 +9,6 @@ class User(AbstractUser):
         null=True,
         error_messages={"unique": '해당 닉네임은 이미 사용중입니다!'},
         validators = [validate_no_special_charactors],
-    )
-
-    slug = AutoSlugField(
-        populate_from='nickname',
-        unique=True,
-        null=True
     )
 
     def __str__(self):

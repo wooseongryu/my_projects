@@ -1,5 +1,6 @@
 from email.policy import default
 from enum import unique
+import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.utils.text import slugify
@@ -20,6 +21,8 @@ class User(AbstractUser):
     )
 
     def save(self, *args, **kwargs):
+        if self.nickname == None:
+            self.nickname = uuid.uuid1()
         self.slug = slugify(self.nickname, allow_unicode=True)
         super(User, self).save(*args, **kwargs)
 

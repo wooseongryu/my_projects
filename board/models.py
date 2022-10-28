@@ -3,6 +3,8 @@ from enum import unique
 import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractUser
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey
 from django.utils.text import slugify
 from .validators import validate_length, validate_no_special_charactors
 
@@ -40,3 +42,26 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Comment(models.Model):
+    content = models.TextField()
+    dt_created = models.DateField(auto_now_add=True)
+    dt_updated = models.DateField(auto_now=True)
+
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return self.content
+
+
+class like(models.Model):
+    dt_created = models.DateField(auto_now_add=True)
+
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    liked_object = GenericForeignKey
+
+    def __str__(self):
+        return f"({self.user}, {self.liked_object})"

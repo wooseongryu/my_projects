@@ -19,7 +19,6 @@ class PostListView(ListView):
     model = Post
     template_name = 'board/post_list.html'
     context_object_name = 'posts'
-    ordering = ['-dt_created']
     paginate_by = 20
     page_kwargs = 'page'
 
@@ -105,7 +104,7 @@ class UserPostListView(ListView):
 
     def get_queryset(self):
         slug = self.kwargs.get('slug')
-        return Post.objects.filter(author__slug=slug).order_by('-dt_created')
+        return Post.objects.filter(author__slug=slug)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

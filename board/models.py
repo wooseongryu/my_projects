@@ -62,12 +62,12 @@ class Comment(models.Model):
         return self.content
 
 
-class like(models.Model):
+class Like(models.Model):
     dt_created = models.DateField(auto_now_add=True)
 
     content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
     object_id = models.PositiveIntegerField()
-    liked_object = GenericForeignKey
+    liked_object = GenericForeignKey()
 
     def __str__(self):
         return f"({self.user}, {self.liked_object})"

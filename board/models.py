@@ -4,7 +4,7 @@ import uuid
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.contrib.contenttypes.models import ContentType
-from django.contrib.contenttypes.fields import GenericForeignKey
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
 from django.utils.text import slugify
 from .validators import validate_length, validate_no_special_charactors
 
@@ -38,7 +38,12 @@ class Post(models.Model):
     dt_created = models.DateField(auto_now_add=True)
     dt_updated = models.DateField(auto_now=True)
 
-    author = models.ForeignKey(User, on_delete=models.CASCADE)
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='posts'
+    )
+    likes = GenericRelation('Like', related_query_name='post')
 
     class Meta:
         ordering = ['-dt_created']
@@ -53,7 +58,12 @@ class Comment(models.Model):
     dt_updated = models.DateField(auto_now=True)
 
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        related_name='comments'
+    )
+    likes = GenericRelation('Like', related_query_name='comment')
 
     class Meta:
         ordering = ['-dt_created']

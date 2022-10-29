@@ -12,6 +12,16 @@
 
 <h2>댓글({{post.comments.count}})</h2>
 
+{% if user.is_authenticated %}
+    <form action="{% url 'comment-create' post.id %}" method="post">{% csrf_token %}
+        {{form.content}}
+        <input type="submit" value="댓글 등록">
+    </form>
+{% else %}
+    <p>댓글을 작성하려면 로그인 해주세요</p>
+    <a href="{% url 'account_login' %}?next={% url 'post-detail' post.id %}">로그인</a>
+{% endif %}
+
 <p>
     {% if post.comments.count != 0 %}
         {% for comment in post.comments.all %}

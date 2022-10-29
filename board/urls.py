@@ -28,6 +28,12 @@ urlpatterns = [
         views.PostDeleteView.as_view(),
         name='post-delete'
     ),
+    # comment
+    path(
+        'post/<int:post_id>/comments/create/',
+        views.CommentCreateView.as_view(),
+        name='comment-create'
+    ),
     # profile
     path(
         'users/<slug>/',

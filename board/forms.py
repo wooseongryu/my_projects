@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post, User
+from .models import Post, User, Comment
 
 class PostForm(forms.ModelForm):
     class Meta:
@@ -19,4 +19,12 @@ class ProfileForm(forms.ModelForm):
     class Meta:
         model = User
         fields = ['nickname']
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']
+        widgets = {
+            'content': forms.Textarea,
+        }
     

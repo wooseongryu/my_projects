@@ -10,8 +10,8 @@ from django.urls import reverse
 from allauth.account.views import PasswordChangeView
 from allauth.account.models import EmailAddress
 from braces.views import LoginRequiredMixin, UserPassesTestMixin
-from .models import Post, User
-from .forms import PostForm, ProfileForm
+from .models import Post, User, Comment
+from .forms import PostForm, ProfileForm, CommentForm
 from .functions import confirmation_required_redirect
 
 
@@ -27,6 +27,12 @@ class PostDetailView(DetailView):
     template_name = 'board/post_detail.html'
     pk_url_kwarg = 'page_id'
     context_object_name = 'post'
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['form'] = CommentForm()
+        return context
+
 
 class PostWriteView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Post
@@ -122,3 +128,22 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('profile', kwargs={'slug':self.object.slug})
+
+class CommentCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
+    http_method_names = ['post']
+    model = Comment
+    form_class = CommentForm
+
+    redirect_unauthenticated_users = True
+    raise_exception = confirmation_required_redirect
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user
+        form.instance.post = Post.objects.get(id=self.kwargs.get('post_id'))
+        return super().form_valid(form)
+    
+    def get_success_url(self):
+        return reverse('post-detail', kwargs={'page_id': self.kwargs.get('post_id')})
+
+    def test_func(self, user):
+        return EmailAddress.objects.filter(user=user, verified=True).exists()

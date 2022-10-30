@@ -25,7 +25,7 @@
 <p>
     {% if post.comments.count != 0 %}
         {% for comment in post.comments.all %}
-            <p>작성자: <a href="#">{{comment.author}}</a></p>
+            <p>작성자: <a href="{% url 'profile' comment.author.slug %}">{{comment.author}}</a></p>
             <p>{{comment.content|linebreaksbr}}</p>
             <p>작성일: {{comment.dt_created}}</p>
             <p>좋아요({{comment.likes.count}})</p>

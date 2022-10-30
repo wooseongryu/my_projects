@@ -8,11 +8,9 @@ from django.views.generic import (
 )
 from django.urls import reverse
 from allauth.account.views import PasswordChangeView
-from allauth.account.models import EmailAddress
-from braces.views import LoginRequiredMixin, UserPassesTestMixin
+from braces.views import LoginRequiredMixin
 from .models import Post, User, Comment
 from .forms import PostForm, ProfileForm, CommentForm
-from .functions import confirmation_required_redirect
 from .mixins import LoginAndOwnershipRequiredMixin, LoginAndVerificationRequiredMixin
 
 
@@ -54,8 +52,6 @@ class PostUpdateView(LoginAndOwnershipRequiredMixin, UpdateView):
     template_name = 'board/post_form.html'
     pk_url_kwarg ='page_id'
 
-    raise_exception = True
-
     def get_success_url(self):
         return reverse('post-detail', kwargs={'page_id':self.object.id})
 
@@ -64,8 +60,6 @@ class PostDeleteView(LoginAndOwnershipRequiredMixin, DeleteView):
     template_name = 'board/post_confirm_delete.html'
     pk_url_kwarg = 'page_id'
     context_object_name = 'post'
-
-    raise_exception = True
 
     def get_success_url(self):
         return reverse('post-list')

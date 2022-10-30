@@ -137,3 +137,12 @@ class CommentUpdateView(LoginAndOwnershipRequiredMixin, UpdateView):
 
     def get_success_url(self):
         return reverse('post-detail', kwargs={'page_id': self.object.post.id})
+
+class CommentDeleteView(LoginAndOwnershipRequiredMixin, DeleteView):
+    model = Comment
+    template_name = 'comment/comment_delete_form.html'
+    pk_url_kwarg = 'comment_id'
+
+    def get_success_url(self):
+        return reverse('post-detail', kwargs={'page_id': self.object.post.id})
+

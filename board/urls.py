@@ -34,6 +34,11 @@ urlpatterns = [
         views.CommentCreateView.as_view(),
         name='comment-create'
     ),
+    path(
+        'comments/<int:comment_id>/comments/update/',
+        views.CommentUpdateView.as_view(),
+        name='comment-update'
+    ),
     # profile
     path(
         'users/<slug>/',

@@ -1,0 +1,5 @@
+<form method="post">{% csrf_token %}
+    {{form.as_ul}}
+    <input type="submit" value="전송">
+    <p><a href="{% url 'post-detail' comment.post.id %}">돌아가기</a></p>
+</form>

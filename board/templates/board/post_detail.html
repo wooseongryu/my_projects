@@ -31,7 +31,7 @@
             <p>좋아요({{comment.likes.count}})</p>
             {% if comment.author == user %}
                 <p>
-                    <a href="#">수정</a>
+                    <a href="{% url 'comment-update' comment.id %}">수정</a>
                     <a href="#">삭제</a>
                 </p>
             {% endif %}

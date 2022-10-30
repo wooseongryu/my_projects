@@ -86,6 +86,7 @@ class ProfileView(DetailView):
         context = super().get_context_data(**kwargs)
         slug = self.kwargs.get('slug')
         context['user_posts'] = Post.objects.filter(author__slug=slug)[:5]
+        context['user_comments'] = Comment.objects.filter(author__slug=slug)[:5]
         return context
 
 class UserPostListView(ListView):
@@ -98,6 +99,22 @@ class UserPostListView(ListView):
     def get_queryset(self):
         slug = self.kwargs.get('slug')
         return Post.objects.filter(author__slug=slug)
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['profile_user'] = get_object_or_404(User, slug=self.kwargs.get('slug'))
+        return context
+
+class UserCommentList(ListView):
+    model = Comment
+    template_name = 'user/user_comment_list.html'
+    context_object_name = 'user_comments'
+    paginate_by = 20
+    page_kwarg = 'page'
+
+    def get_queryset(self):
+        slug = self.kwargs.get('slug')
+        return Comment.objects.filter(author__slug=slug)
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)

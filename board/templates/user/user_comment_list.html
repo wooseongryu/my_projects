@@ -1,0 +1,26 @@
+<h1>{{profile_user.nickname}}의 댓글 ({{paginator.count}})</h1>
+
+<table>
+    {% for comment in user_comments %}
+        <tr>            
+            <td><a href="{% url 'post-detail' comment.post.id %}">{{comment.content}}</a></td>      
+            <td>작성일:{{comment.dt_created|date:"Y.m.d"}}</td>
+        </tr>
+    {% empty %}
+        <p>작성한 댓글이 없습니다</p>
+    {% endfor %}
+</table>
+
+<p><a href="{% url 'profile' profile_user.slug %}">프로필로 돌아가기</a></p>
+
+{% if page_obj.has_previous %}
+    <a href="?page=1">first</a>
+    <a href="?page={{page_obj.previous_page_number}}">prev</a>
+{% endif %}
+
+    <p>{{page_obj.number}} of {{page_obj.paginator.num_pages}}</p>
+            
+{% if page_obj.has_next %}
+    <a href="?page={{page_obj.next_page_number}}">next</a>
+    <a href="?page={{page_obj.paginator.num_pages}}">last</a>
+{% endif %}

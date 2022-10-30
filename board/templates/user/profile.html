@@ -20,4 +20,26 @@
 {% if user_posts %}
     <p><a href="{% url 'user-post-list' profile_user.slug %}">전체 포스트 보기</a></p>
 {% endif %}
+
+<p>------------------------</p>
+
+<p>작성 댓글 목록</p>
+<table>
+    {% for comment in user_comments %}
+        <tr>            
+            <td><a href="{% url 'post-detail' comment.post.id %}">{{comment.content}}</a></td>      
+            <td>작성일:{{comment.dt_created|date:"Y.m.d"}}</td>
+        </tr>
+    {% empty %}
+        <p>작성한 댓글이 없습니다</p>
+    {% endfor %}
+</table>
+{% if user_posts %}
+    <p><a href="{% url 'user-comment-list' profile_user.slug %}">전체 댓글 보기</a></p>
+{% endif %}
+
+
+
+
+
 <p><a href="{% url 'post-list' %}">홈으로 이동</a></p>

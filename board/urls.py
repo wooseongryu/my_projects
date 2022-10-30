@@ -62,4 +62,9 @@ urlpatterns = [
         views.ProfileUpdateView.as_view(),
         name='profile-update'
     ),
+    path(
+        'users/<slug>/comments/',
+        views.UserCommentList.as_view(),
+        name='user-comment-list'
+    ),
 ]

@@ -13,7 +13,6 @@ from braces.views import LoginRequiredMixin, UserPassesTestMixin
 from .models import Post, User, Comment
 from .forms import PostForm, ProfileForm, CommentForm
 from .functions import confirmation_required_redirect
-from .mixins import LoginAndVerificationRequiredMixin, LoginAndOwnershipRequiredMixin
 
 
 class PostListView(ListView):
@@ -35,21 +34,26 @@ class PostDetailView(DetailView):
         return context
 
 
-class PostWriteView(LoginAndVerificationRequiredMixin, CreateView):
+class PostWriteView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     model = Post
     form_class = PostForm
     template_name = 'board/post_form.html'
+
+    redirect_unauthenticated_users = True
+    raise_exception = confirmation_required_redirect
 
     # user모델과 자동으로 연동시킴
     def form_valid(self, form):
         form.instance.author = self.request.user
         return super().form_valid(form)
 
+    def test_func(self, user):
+        return EmailAddress.objects.filter(user=user, verified=True).exists()
 
     def get_success_url(self):
         return reverse('post-detail', kwargs={'page_id':self.object.id})
 
-class PostUpdateView(LoginAndOwnershipRequiredMixin, UpdateView):
+class PostUpdateView(UserPassesTestMixin, UpdateView):
     model = Post
     form_class = PostForm
     template_name = 'board/post_form.html'
@@ -57,16 +61,24 @@ class PostUpdateView(LoginAndOwnershipRequiredMixin, UpdateView):
 
     raise_exception = True
 
+    def test_func(self, user):
+        post = self.get_object()
+        return post.author == user
+
     def get_success_url(self):
         return reverse('post-detail', kwargs={'page_id':self.object.id})
 
-class PostDeleteView(LoginAndOwnershipRequiredMixin, DeleteView):
+class PostDeleteView(UserPassesTestMixin, DeleteView):
     model = Post
     template_name = 'board/post_confirm_delete.html'
     pk_url_kwarg = 'page_id'
     context_object_name = 'post'
 
     raise_exception = True
+
+    def test_func(self, user):
+        post = self.get_object()
+        return post.author == user
 
     def get_success_url(self):
         return reverse('post-list')
@@ -117,10 +129,13 @@ class ProfileUpdateView(LoginRequiredMixin, UpdateView):
     def get_success_url(self):
         return reverse('profile', kwargs={'slug':self.object.slug})
 
-class CommentCreateView(LoginAndVerificationRequiredMixin, CreateView):
+class CommentCreateView(LoginRequiredMixin, UserPassesTestMixin, CreateView):
     http_method_names = ['post']
     model = Comment
     form_class = CommentForm
+
+    redirect_unauthenticated_users = True
+    raise_exception = confirmation_required_redirect
 
     def form_valid(self, form):
         form.instance.author = self.request.user
@@ -130,3 +145,5 @@ class CommentCreateView(LoginAndVerificationRequiredMixin, CreateView):
     def get_success_url(self):
         return reverse('post-detail', kwargs={'page_id': self.kwargs.get('post_id')})
 
+    def test_func(self, user):
+        return EmailAddress.objects.filter(user=user, verified=True).exists()

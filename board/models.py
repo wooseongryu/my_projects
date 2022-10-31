@@ -81,5 +81,10 @@ class Like(models.Model):
     object_id = models.PositiveIntegerField()
     liked_object = GenericForeignKey()
 
+    # 어드민페이지에서 데이터조작시 중복이 발생할 수 있기 때문에 튜플(user, content_type, object_id)에 대한 unique를 준다.
+    class Meta:
+        # 여러 필드의 조합이 중복되면 안될때 unique_together사용
+        unique_together = ['user', 'content_type', 'object_id']
+
     def __str__(self):
         return f"({self.user}, {self.liked_object})"

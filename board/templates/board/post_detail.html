@@ -41,6 +41,16 @@
             <p>{{comment.content|linebreaksbr}}</p>
             <p>작성일: {{comment.dt_created}}</p>
             <p>좋아요({{comment.likes.count}})</p>
+
+            {% if user.is_authenticated %}
+                <form action="{% url 'process-like' comment_content_type_id comment.id %}" method="post">{% csrf_token %}
+                <input type="submit" value="좋아요">
+                </form>
+            {% else %}
+                <p>좋아요를 추가하려면 로그인 해주세요</p>
+                <a href="{% url 'account_login' %}?next={% url 'post-detail' post.id %}">로그인</a>
+            {% endif %}
+
             {% if comment.author == user %}
                 <p>
                     <a href="{% url 'comment-update' comment.id %}">수정</a>

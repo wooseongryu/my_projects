@@ -33,6 +33,7 @@ class PostDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['form'] = CommentForm()
         context['post_content_type_id'] = ContentType.objects.get(model='post').id
+        context['comment_content_type_id'] = ContentType.objects.get(model='comment').id
         return context
 
 

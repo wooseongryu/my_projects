@@ -1,15 +1,17 @@
-from django.shortcuts import get_object_or_404
+from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import (
     ListView, 
     DetailView,
     CreateView,
     UpdateView,
     DeleteView,
+    View
 )
 from django.urls import reverse
+from django.contrib.contenttypes.models import ContentType
 from allauth.account.views import PasswordChangeView
 from braces.views import LoginRequiredMixin
-from .models import Post, User, Comment
+from .models import Post, User, Comment, Like
 from .forms import PostForm, ProfileForm, CommentForm
 from .mixins import LoginAndOwnershipRequiredMixin, LoginAndVerificationRequiredMixin
 
@@ -30,6 +32,7 @@ class PostDetailView(DetailView):
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = CommentForm()
+        context['post_content_type_id'] = ContentType.objects.get(model='post').id
         return context
 
 
@@ -156,4 +159,21 @@ class CommentDeleteView(LoginAndOwnershipRequiredMixin, DeleteView):
 
     def get_success_url(self):
         return reverse('post-detail', kwargs={'page_id': self.object.post.id})
+
+class ProcessLikeView(LoginAndVerificationRequiredMixin, View):
+    http_method_names = ['post']
+
+    def post(self, request, *args, **kwargs):
+        # get_or_create는 아래 조건에 해당하는게 있으면 가져오고 가져온걸 like에 저장하고 created=False가 된다
+        # 아래 조건에 해당하는게 없으면 오브젝트를 생성하고 like에 저장하고 created=True가 된다
+        like, created = Like.objects.get_or_create(
+            user = self.request.user,
+            content_type_id = self.kwargs.get('content_type_id'),
+            object_id = self.kwargs.get('object_id')
+        )
+        if not created:
+            like.delete()
+        # 좋아요는 여러곳에서 쓰일 수 있으니 self.request.META['HTTP_REFERER']는 항상 이 뷰로 요청을 보낸 페이지의 주소를 가지고 있다
+        return redirect(self.request.META['HTTP_REFERER'])
+
 

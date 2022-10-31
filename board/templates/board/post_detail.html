@@ -3,6 +3,18 @@
 <p>작성일: {{ post.dt_created|date:"Y.m.d" }}</p>
 <p>수정일: {{ post.dt_updated|date:"Y.m.d" }}</p>
 
+<p>좋아요({{post.likes.count}})</p>
+
+{% if user.is_authenticated %}
+    <form action="{% url 'process-like' post_content_type_id post.id %}" method="post">{% csrf_token %}
+        <input type="submit" value="좋아요">
+    </form>
+{% else %}
+    <p>좋아요를 추가하려면 로그인 해주세요</p>
+    <a href="{% url 'account_login' %}?next={% url 'post-detail' post.id %}">로그인</a>
+{% endif %}
+
+
 {% if post.author == user %}
     <p><a href="{% url 'post-update' post.id %}">수정하기</a></p>
     <p><a href="{% url 'post-delete' post.id %}">삭제하기</a></p>

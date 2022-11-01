@@ -15,5 +15,7 @@
     {% endfor %}
 </table>
 
+<p><a href="{% url 'post-list' %}">홈으로 돌아가기</a></p>
+
 {% include 'components/pagination.html' with page_obj=page_obj %}
 

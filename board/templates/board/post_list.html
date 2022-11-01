@@ -24,4 +24,9 @@
     {% endfor %}
 </table>
 
+<form action="{% url 'search' %}" method="get">
+    <input type="text" name="query" placeholder="검색어를 입력해주세요">
+    <button type="submit">검색</button>
+</form>
+
 {% include 'components/pagination.html' with page_obj=page_obj %}

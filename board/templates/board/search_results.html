@@ -1,0 +1,19 @@
+<form action="{% url 'search' %}" method="get">
+    <input type="text" name="query" value="{{query}}" placeholder="검색어를 입력해주세요">
+    <button type="submit">검색</button>
+</form>
+
+<h2>"{{query}}"에 대한 검색 결과 {{paginator.count}}</h2>
+
+<table>
+    {% for post in search_results %}
+        <tr>            
+            <td><a href="{% url 'post-detail' post.id %}">{{post.title}}</a></td>
+            <td>작성자:<a href="{% url 'profile' post.author.slug %}">{{post.author.nickname}}</a></td>
+            <td>작성일:{{post.dt_created|date:"Y.m.d"}}</td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% include 'components/pagination.html' with page_obj=page_obj %}
+

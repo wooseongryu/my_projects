@@ -1,3 +1,4 @@
+from django.db.models import Q
 from django.shortcuts import get_object_or_404, redirect
 from django.views.generic import (
     ListView, 
@@ -178,3 +179,22 @@ class ProcessLikeView(LoginAndVerificationRequiredMixin, View):
         return redirect(self.request.META['HTTP_REFERER'])
 
 
+class SearchView(ListView):
+    model = Post
+    context_object_name = 'search_results'
+    template_name = 'board/search_results.html'
+    paginate_by = 20
+
+    def get_queryset(self):
+        # search url로 직접 접근하면 null이 전달되어 에러가 날 수 있으므로 검색어가 전달되지 않았을 땐 ''전달
+        query = self.request.GET.get('query', '')
+        return Post.objects.filter(
+            Q(title__contains=query)
+            | Q(content__contains=query)
+        )
+
+    # 검색어를 템플릿으로 전달해 뭘 검색했는지 보여줄 것
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['query'] = self.request.GET.get('query', '')
+        return context

@@ -28,6 +28,11 @@ urlpatterns = [
         views.PostDeleteView.as_view(),
         name='post-delete'
     ),
+    path(
+        'search/',
+        views.SearchView.as_view(),
+        name='search'
+    ),
     # comment
     path(
         'post/<int:post_id>/comments/create/',

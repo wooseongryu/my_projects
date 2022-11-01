@@ -5,15 +5,7 @@
 
 <h2>"{{query}}"에 대한 검색 결과 {{paginator.count}}</h2>
 
-<table>
-    {% for post in search_results %}
-        <tr>            
-            <td><a href="{% url 'post-detail' post.id %}">{{post.title}}</a></td>
-            <td>작성자:<a href="{% url 'profile' post.author.slug %}">{{post.author.nickname}}</a></td>
-            <td>작성일:{{post.dt_created|date:"Y.m.d"}}</td>
-        </tr>
-    {% endfor %}
-</table>
+{% include 'components/post_list.html' with posts=search_results %}
 
 <p><a href="{% url 'post-list' %}">홈으로 돌아가기</a></p>
 

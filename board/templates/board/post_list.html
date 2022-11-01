@@ -13,20 +13,15 @@
 
 <p><a href="{% url 'post-write' %}">글 작성하기</a></p>
 
-<table>
-    <th>포스트 목록</th>
-    {% for post in posts %}
-        <tr>            
-            <td><a href="{% url 'post-detail' post.id %}">{{post.title}}</a></td>
-            <td>작성자:<a href="{% url 'profile' post.author.slug %}">{{post.author.nickname}}</a></td>
-            <td>작성일:{{post.dt_created|date:"Y.m.d"}}</td>
-        </tr>
-    {% endfor %}
-</table>
+<h2>포스트 목록</h2>
+{% include 'components/post_list.html' with posts=posts %}
 
-<form action="{% url 'search' %}" method="get">
-    <input type="text" name="query" placeholder="검색어를 입력해주세요">
-    <button type="submit">검색</button>
-</form>
+<p>
+    <form action="{% url 'search' %}" method="get">
+        <input type="text" name="query" placeholder="검색어를 입력해주세요">
+        <button type="submit">검색</button>
+    </form>
+</p>
+
 
 {% include 'components/pagination.html' with page_obj=page_obj %}

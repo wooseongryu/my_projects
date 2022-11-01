@@ -3,7 +3,7 @@
 <table>
     {% for comment in user_comments %}
         <tr>            
-            <td><a href="{% url 'post-detail' comment.post.id %}">{{comment.content}}</a></td>      
+            <td><a href="{% url 'post-detail' comment.post.id %}">{{comment.content|linebreaksbr}}</a></td>      
             <td>작성일:{{comment.dt_created|date:"Y.m.d"}}</td>
         </tr>
     {% empty %}

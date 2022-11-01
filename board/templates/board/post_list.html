@@ -5,6 +5,7 @@
     <a href="{% url 'account_logout' %}">로그아웃</a>
     <a href="{% url 'account_change_password' %}">비밀번호 변경</a>
     <a href="{% url 'profile-update' %}">프로필 설정</a>
+    <a href="{% url 'profile' user.slug %}">내 프로필</a>
 {% else %}
     <a href="{% url 'account_login' %}">로그인</a>
     <a href="{% url 'account_signup' %}">회원가입</a>

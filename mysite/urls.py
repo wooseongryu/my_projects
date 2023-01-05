@@ -14,8 +14,30 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+from django.views.generic import TemplateView
+from board.views import CustomPasswordChangeView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', include('board.urls')),
+    # allauth에도 같은 url이 있으니
+    # 오버라이드한 것을 사용하기 위해
+    # allauth보다 위에 작성
+    path(
+        'password/change/',
+        CustomPasswordChangeView.as_view(),
+        name='account_change_password'
+    ),
+    path('', include('allauth.urls')),
+    path(
+        'email-confirmation-done/',
+        TemplateView.as_view(template_name='account/email_confirmation_done.html'),
+        name = 'account_email_confirmation_done',
+    ),
+    path(
+        'email-confirmation-required',
+        TemplateView.as_view(template_name='account/email_confirmation_required.html'),
+        name='account_email_confirmation_required'
+    ),
 ]

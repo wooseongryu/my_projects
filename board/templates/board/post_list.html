@@ -1,0 +1,27 @@
+<h1>포스트 목록 페이지</h1>
+
+{% if user.is_authenticated %}
+    <p>안녕하세요, {{user}}님</p>
+    <a href="{% url 'account_logout' %}">로그아웃</a>
+    <a href="{% url 'account_change_password' %}">비밀번호 변경</a>
+    <a href="{% url 'profile-update' %}">프로필 설정</a>
+    <a href="{% url 'profile' user.slug %}">내 프로필</a>
+{% else %}
+    <a href="{% url 'account_login' %}">로그인</a>
+    <a href="{% url 'account_signup' %}">회원가입</a>
+{% endif %}
+
+<p><a href="{% url 'post-write' %}">글 작성하기</a></p>
+
+<h2>포스트 목록</h2>
+{% include 'components/post_list.html' with posts=posts %}
+
+<p>
+    <form action="{% url 'search' %}" method="get">
+        <input type="text" name="query" placeholder="검색어를 입력해주세요">
+        <button type="submit">검색</button>
+    </form>
+</p>
+
+
+{% include 'components/pagination.html' with page_obj=page_obj %}

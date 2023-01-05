@@ -1,0 +1,13 @@
+<form action="{% url 'search' %}" method="get">
+    <input type="text" name="query" value="{{query}}" placeholder="검색어를 입력해주세요">
+    <button type="submit">검색</button>
+</form>
+
+<h2>"{{query}}"에 대한 검색 결과 {{paginator.count}}</h2>
+
+{% include 'components/post_list.html' with posts=search_results %}
+
+<p><a href="{% url 'post-list' %}">홈으로 돌아가기</a></p>
+
+{% include 'components/pagination.html' with page_obj=page_obj %}
+

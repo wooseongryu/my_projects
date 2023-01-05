@@ -1,0 +1,9 @@
+<table>
+    {% for post in posts %}
+        <tr>            
+            <td><a href="{% url 'post-detail' post.id %}">{{post.title}}</a></td>
+            <td>작성자:<a href="{% url 'profile' post.author.slug %}">{{post.author.nickname}}</a></td>
+            <td>작성일:{{post.dt_created|date:"Y.m.d"}}</td>
+        </tr>
+    {% endfor %}
+</table>
